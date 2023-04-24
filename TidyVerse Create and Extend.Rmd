@@ -1,0 +1,84 @@
+---
+title: "TidyVerse Create and Extend (Vignette)"
+author: "Joyce Aldrich"
+date: "2023-04-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+
+In this assignment, I will use some handy functions in `dplyr` package to tidy data.
+
+ * dplyr: a set of tools for efficiently manipulating datasets
+ 
+```{r 0, message=FALSE, warning=FALSE}
+library(dplyr)
+
+```
+
+
+## Dataset
+
+The dataset in this project is called 'Student Performance' from <https://www.kaggle.com/datasets>  
+The description of data is as below:
+
+    "gender" - the gender of the student
+    "race/ethnicity" - the student's racial or ethnic background
+    "parental level of education" - the highest level of education attained by the student's parent(s) or guardian(s)
+    "lunch" - whether the student receives free or reduced-price lunch (yes/no)
+    "text preparation course" - whether the student completed a test preparation course (yes/no)
+    "math score" - the student's score on a standardized mathematics test
+    "reading score" - the student's score on a standardized reading test
+    "writing score" - the student's score on a standardized writing test
+
+## readr::read_csv 
+
+I use `read_csv` function from `readr` to import csv file.
+```{r}
+student_exam <- read_csv("/Users/joycealdrich/Documents/SPS Data Science/Data 607/Vignette/student performance.csv")
+head(student_exam)
+```
+
+## dplyr:rename
+
+`rename`function to change the column from old to a new name. I do the following:
+
+```{r}
+student_exam_rename <- rename( student_exam,
+        race_ethnicity = `race/ethnicity`,
+        parental_level_of_education =  `parental level of education` ,
+        test_preparation_course = `test preparation course`,
+        math_score = `math score`,
+        reading_score = `reading score`,
+        writing_score = `writing score`)
+```
+    
+
+## dplyr:mutate
+
+`mutate` function adds new variables into the dataframe and presevers the existing ones. For example, if I want to calculate the score of three exams 'math', 'reading' and 'writing' and the average score of these three exams and retain 'math', 'reading' and 'writing', I do the following:
+
+```{r}
+
+student_exam_mutate <- mutate( student_exam_rename, total_score = math_score + reading_score +writing_score, average= round((math_score + reading_score +writing_score)/3, digits = 2))
+
+student_exam_mutate
+
+```
+
+
+## dplyr:filter
+
+the `filter` function is straightforward, I can exract rows that meet logical criteria. If I wound like to find the students whose math score and writing score are above 80 then the `filter` function is also handy.
+```{r}
+student_exam_filter <-  filter (student_exam_mutate, math_score >= 80 & writing_score >= 80)
+
+student_exam_filter
+```
+
+
