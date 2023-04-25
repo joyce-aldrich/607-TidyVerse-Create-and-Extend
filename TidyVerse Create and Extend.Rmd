@@ -18,6 +18,7 @@ In this assignment, I will use some handy functions in `dplyr` package to tidy d
  
 ```{r 0, message=FALSE, warning=FALSE}
 library(dplyr)
+library(readr) # read csv file
 
 ```
 
@@ -46,7 +47,7 @@ head(student_exam)
 
 ## dplyr:rename
 
-`rename`function to change the column from old to a new name. I do the following:
+the `rename`function to change the column from old to a new name. I do the following:
 
 ```{r}
 student_exam_rename <- rename( student_exam,
@@ -70,6 +71,16 @@ student_exam_mutate <- mutate( student_exam_rename, total_score = math_score + r
 student_exam_mutate
 
 ```
+
+## dplyr:select
+the `select` function is straightforward, I can select the columns that I want. If I want to drop columns such as the 'lunch' and  ‘parental_level_of_education’, the select function is also handy.
+
+```{r}
+student_exam_select <- select(student_exam_mutate, -lunch, -parental_level_of_education)
+
+student_exam_select
+```
+
 
 
 ## dplyr:filter
